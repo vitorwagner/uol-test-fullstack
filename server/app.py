@@ -53,6 +53,15 @@ def create_user():
     db.session.commit()
     return jsonify(new_user.serialize()), 201
 
+@app.route("/api/users/delete/<int:id>", methods=["DELETE"])
+def delete_user(id):
+    user = User.query.get(id)
+    if user is None:
+        return "User not found", 404
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify(user.serialize()), 200
+
 
 if __name__ == "__main__":
     with app.app_context():
