@@ -1,4 +1,5 @@
 import Header from '../components/Header';
+import UserForm from '../components/UserForm';
 
 const Create = () => {
   return (
@@ -8,6 +9,7 @@ const Create = () => {
         <h1>Create</h1>
         <p>Welcome to the create page</p>
       </div>
+      <UserForm />
     </>
   );
 };
