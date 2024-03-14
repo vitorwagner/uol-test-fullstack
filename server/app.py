@@ -62,6 +62,27 @@ def delete_user(id):
     db.session.commit()
     return jsonify(user.serialize()), 200
 
+@app.route("/api/users/update/<int:id>", methods=["PUT"])
+def update_user(id):
+    user = User.query.get(id)
+    if user is None:
+        return "User not found", 404
+    data = request.get_json()
+    user.name = data["name"]
+    user.email = data["email"]
+    user.CPF = data["CPF"]
+    user.phone = data["phone"]
+    user.status = data["status"]
+    db.session.commit()
+    return jsonify(user.serialize()), 200
+
+@app.route("/api/users/<int:id>", methods=["GET"])
+def get_user(id):
+    user = User.query.get(id)
+    if user is None:
+        return "User not found", 404
+    return jsonify(user.serialize())
+
 
 if __name__ == "__main__":
     with app.app_context():
