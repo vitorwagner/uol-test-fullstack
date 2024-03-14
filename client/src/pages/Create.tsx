@@ -1,9 +1,14 @@
+import Header from '../components/Header';
+
 const Create = () => {
   return (
-    <div>
-      <h1>Create</h1>
-      <p>Welcome to the create page</p>
-    </div>
+    <>
+      <Header />
+      <div>
+        <h1>Create</h1>
+        <p>Welcome to the create page</p>
+      </div>
+    </>
   );
 };
 

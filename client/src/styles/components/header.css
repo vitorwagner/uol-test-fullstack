@@ -1,11 +1,17 @@
 header {
   background-color: #5c5c5c;
-  padding: 20px;
-  text-align: center;
 }
 
 h1 {
   color: #070606;
   font-size: 24px;
-  margin: 0;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+  margin: 0 auto;
+  padding: 1rem;
 }
