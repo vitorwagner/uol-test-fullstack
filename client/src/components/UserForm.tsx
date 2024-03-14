@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Joi from 'joi';
-import InputMask from 'react-input-mask';
+import { PatternFormat }from 'react-number-format';
 
 interface UserFormProps {
   id?: number;
@@ -97,27 +97,25 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
           />
         </div>
         <div>
-          <InputMask
-            type="text"
+          <PatternFormat
             name="phone"
             id="phone"
             placeholder="Phone"
-            mask="(99) 99999-9999"
-            maskChar={null}
             value={formValues.phone}
-            onChange={(e) =>
-              setFormValues({ ...formValues, phone: e.target.value })
+            onValueChange={({ value }) =>
+              setFormValues({ ...formValues, phone: value })
             }
+            format="(##) #####-####"
+            mask=""
           />
         </div>
         <div>
-          <InputMask
-            type="text"
+          <PatternFormat
             name="CPF"
             id="CPF"
             placeholder="CPF"
-            mask="999.999.999-99"
-            maskChar={null}
+            format="###.###.###-##"
+            mask=""
             value={formValues.CPF}
             onChange={(e) =>
               setFormValues({ ...formValues, CPF: e.target.value })
