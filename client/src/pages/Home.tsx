@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import Header from "../components/Header";
-import axios from "axios";
-import UserCard from "../components/UserCard";
+import { useEffect, useState } from 'react';
+import Header from '../components/Header';
+import axios from 'axios';
+import UserCard from '../components/UserCard';
 
 export interface User {
   id: number;
@@ -10,9 +10,9 @@ export interface User {
   phone: string;
   status: string;
 }
+const API_URL = import.meta.env.VITE_API_URL as string;
 
 const Home = () => {
-  const API_URL = "http://localhost:8080/api/users";
   const [users, setUsers] = useState([]);
 
   const FetchAPI = async () => {
@@ -20,26 +20,25 @@ const Home = () => {
     const data = await response.data;
     setUsers(data);
     console.log(data);
-  }
+  };
 
   useEffect(() => {
     FetchAPI();
   }, []);
 
-
   return (
     <>
-    <Header />
-    <div>
-      <h1>Home</h1>
-      <p>Welcome to the home page</p>
-    </div>
-    <h2>Users</h2>
-    <div>
-      {users.map((user: User) => (
-        <UserCard key={user.id} user={user} />
-      ))}
-    </div>
+      <Header />
+      <div>
+        <h1>Home</h1>
+        <p>Welcome to the home page</p>
+      </div>
+      <h2>Users</h2>
+      <div>
+        {users.map((user: User) => (
+          <UserCard key={user.id} user={user} />
+        ))}
+      </div>
     </>
   );
 };
