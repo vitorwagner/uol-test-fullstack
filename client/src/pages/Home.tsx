@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import axios from "axios";
+import UserCard from "../components/UserCard";
 
-interface User {
+export interface User {
   id: number;
   name: string;
   CPF: string;
+  phone: string;
   status: string;
 }
 
@@ -32,13 +34,11 @@ const Home = () => {
       <h1>Home</h1>
       <p>Welcome to the home page</p>
     </div>
+    <h2>Users</h2>
     <div>
-      <h1>Users</h1>
-      <ul>
-        {users.map((user: User) => (
-          <li key={user.id}>{user.name} - {user.CPF} - {user.status}</li>
-        ))}
-      </ul>
+      {users.map((user: User) => (
+        <UserCard key={user.id} user={user} />
+      ))}
     </div>
     </>
   );
