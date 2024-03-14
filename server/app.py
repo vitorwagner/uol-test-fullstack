@@ -35,7 +35,7 @@ class User(db.Model):
 
 @app.route("/api/users", methods=["GET"])
 def get_users():
-    users = User.query.all()
+    users = db.session.execute(db.select(User)).scalars()
     return jsonify([user.serialize() for user in users])
 
 
@@ -55,7 +55,7 @@ def create_user():
 
 @app.route("/api/users/delete/<int:id>", methods=["DELETE"])
 def delete_user(id):
-    user = User.query.get(id)
+    user = db.session.get(User, id)
     if user is None:
         return "User not found", 404
     db.session.delete(user)
@@ -64,7 +64,7 @@ def delete_user(id):
 
 @app.route("/api/users/update/<int:id>", methods=["PUT"])
 def update_user(id):
-    user = User.query.get(id)
+    user = db.session.get(User, id)
     if user is None:
         return "User not found", 404
     data = request.get_json()
@@ -78,7 +78,7 @@ def update_user(id):
 
 @app.route("/api/users/<int:id>", methods=["GET"])
 def get_user(id):
-    user = User.query.get(id)
+    user = db.session.get(User, id)
     if user is None:
         return "User not found", 404
     return jsonify(user.serialize())
