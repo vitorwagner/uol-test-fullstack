@@ -6,6 +6,7 @@ import UserCard from '../components/UserCard';
 export interface User {
   id: number;
   name: string;
+  email: string;
   CPF: string;
   phone: string;
   status: string;
