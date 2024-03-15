@@ -1,21 +1,23 @@
 import { Link } from 'react-router-dom';
-import '../styles/components/header.css';
+import { ButtonGroup, Button, AppBar, Box, Typography } from '@mui/material';
 
 const Header: React.FC = () => {
   return (
-    <header className="header">
-      <h1>UOL Fullstack Test</h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/create">Create</Link>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <AppBar position="sticky">
+      <Box display="flex" alignItems="center" justifyContent="space-between" margin="1rem">
+        <Typography variant="h6" component="div">
+          UOL Fullstack Test
+        </Typography>
+        <ButtonGroup>
+          <Button variant="contained" component={Link} to="/">
+            Home
+          </Button>
+          <Button variant="contained" component={Link} to="/create">
+            Create
+          </Button>
+        </ButtonGroup>
+      </Box>
+    </AppBar>
   );
 };
 
