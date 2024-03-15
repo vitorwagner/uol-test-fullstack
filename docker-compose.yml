@@ -1,0 +1,18 @@
+services:
+  client:
+    container_name: app-client
+    build: ./client
+    ports:
+      - "3000:3000"
+    working_dir: ./client
+    environment:
+      - VITE_API_URL="http://localhost:3001/api/users"
+
+  server:
+    container_name: app-server
+    build: ./server
+    ports:
+      - "3001:3001"
+    working_dir: ./server
+    volumes:
+      - /app/server/
