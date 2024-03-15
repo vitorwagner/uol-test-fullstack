@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_expects_json import expects_json
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -31,6 +32,19 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User %r>" % self.name
+    
+
+schema = {
+    "type": "object",
+    "properties": {
+        "name": {"type": "string"},
+        "email": {"type": "string"},
+        "CPF": {"type": "string", "pattern": "^([0-9]){3}\.([0-9]){3}\.([0-9]){3}-([0-9]){2}$"},
+        "phone": {"type": "string", "pattern": "^\([1-9]{2}\) (?:[2-8]|9[0-9])[0-9]{3}\-[0-9]{4}$"},
+        "status": {"type": "string"},
+    },
+    "required": ["name", "email", "CPF", "phone", "status"],
+}
 
 
 @app.route("/api/users", methods=["GET"])
@@ -40,6 +54,7 @@ def get_users():
 
 
 @app.route("/api/users", methods=["POST"])
+@expects_json(schema)
 def create_user():
     data = request.get_json()
     new_user = User(
@@ -63,6 +78,7 @@ def delete_user(id):
     return jsonify(user.serialize()), 200
 
 @app.route("/api/users/update/<int:id>", methods=["PUT"])
+@expects_json(schema)
 def update_user(id):
     user = db.session.get(User, id)
     if user is None:
