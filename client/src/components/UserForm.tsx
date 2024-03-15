@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Joi from 'joi';
-import { PatternFormat } from 'react-number-format';
+import { CPFPatternCustom, PhonePatternCustom } from '../utils/customPatterns';
 import { Box, TextField, Select, MenuItem, Button } from '@mui/material';
 
 interface UserFormProps {
@@ -109,31 +109,37 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
               />
             </div>
             <div>
-              <label htmlFor="">Phone: </label>
-              <PatternFormat
+              <TextField
                 name="phone"
                 id="phone"
-                placeholder="Phone"
+                label="Phone"
                 value={formValues.phone}
-                onValueChange={({ value }) =>
-                  setFormValues({ ...formValues, phone: value })
+                onChange={(e) =>
+                  setFormValues({ ...formValues, phone: e.target.value })
                 }
-                format="(##) #####-####"
-                mask=""
+                InputProps={{
+                  // https://mui.com/material-ui/react-text-field/#integration-with-3rd-party-input-libraries
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  inputComponent: PhonePatternCustom as any,
+                }}
+                variant="standard"
               />
             </div>
             <div>
-              <label>CPF: </label>
-              <PatternFormat
+              <TextField
                 name="CPF"
                 id="CPF"
-                placeholder="CPF"
-                format="###.###.###-##"
-                mask=""
+                label="CPF"
                 value={formValues.CPF}
                 onChange={(e) =>
                   setFormValues({ ...formValues, CPF: e.target.value })
                 }
+                InputProps={{
+                  // https://mui.com/material-ui/react-text-field/#integration-with-3rd-party-input-libraries
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  inputComponent: CPFPatternCustom as any,
+                }}
+                variant="standard"
               />
             </div>
             <div>
