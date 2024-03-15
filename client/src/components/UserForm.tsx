@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Joi from 'joi';
-import { PatternFormat }from 'react-number-format';
+import { PatternFormat } from 'react-number-format';
+import { Box, TextField, Select, MenuItem, Button } from '@mui/material';
 
 interface UserFormProps {
   id?: number;
@@ -30,7 +31,7 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
     email: '',
     phone: '',
     CPF: '',
-    status: '',
+    status: 'active',
   });
   useEffect(() => {
     if (id !== undefined) {
@@ -66,80 +67,101 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
   };
 
   return (
-    <>
-      {id !== undefined ? <h1>Update User {id}</h1> : <h1>Create User</h1>}
-      <form onSubmit={onSubmit}>
-        <div>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Name"
-            value={formValues.name}
-            onChange={(e) =>
-              setFormValues({ ...formValues, name: e.target.value })
-            }
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            name="email"
-            id="email"
-            placeholder="Email"
-            value={formValues.email}
-            onChange={(e) =>
-              setFormValues({ ...formValues, email: e.target.value })
-            }
-          />
-        </div>
-        <div>
-          <PatternFormat
-            name="phone"
-            id="phone"
-            placeholder="Phone"
-            value={formValues.phone}
-            onValueChange={({ value }) =>
-              setFormValues({ ...formValues, phone: value })
-            }
-            format="(##) #####-####"
-            mask=""
-          />
-        </div>
-        <div>
-          <PatternFormat
-            name="CPF"
-            id="CPF"
-            placeholder="CPF"
-            format="###.###.###-##"
-            mask=""
-            value={formValues.CPF}
-            onChange={(e) =>
-              setFormValues({ ...formValues, CPF: e.target.value })
-            }
-          />
-        </div>
-        <div>
-          <select
-            name="status"
-            id="status"
-            value={formValues.status}
-            onChange={(e) =>
-              setFormValues({ ...formValues, status: e.target.value })
-            }
+    <Box display="flex">
+      <Box
+        margin="auto"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <form onSubmit={onSubmit}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="space-between"
+            height="400px"           
           >
-            {statusOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <button type="submit"><span>{id ? 'Editar' : 'Criar'}</span></button>
-        </div>
-      </form>
-    </>
+            <div>
+              <TextField
+                type="text"
+                label="name"
+                name="name"
+                id="name"
+                placeholder="Name"
+                value={formValues.name}
+                onChange={(e) =>
+                  setFormValues({ ...formValues, name: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <TextField
+                type="text"
+                label="email"
+                name="email"
+                id="email"
+                placeholder="Email"
+                value={formValues.email}
+                onChange={(e) =>
+                  setFormValues({ ...formValues, email: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <label htmlFor="">Phone: </label>
+              <PatternFormat
+                name="phone"
+                id="phone"
+                placeholder="Phone"
+                value={formValues.phone}
+                onValueChange={({ value }) =>
+                  setFormValues({ ...formValues, phone: value })
+                }
+                format="(##) #####-####"
+                mask=""
+              />
+            </div>
+            <div>
+              <label>CPF: </label>
+              <PatternFormat
+                name="CPF"
+                id="CPF"
+                placeholder="CPF"
+                format="###.###.###-##"
+                mask=""
+                value={formValues.CPF}
+                onChange={(e) =>
+                  setFormValues({ ...formValues, CPF: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <Select
+                name="status"
+                label="status"
+                id="status"
+                value={formValues.status}
+                onChange={(e) =>
+                  setFormValues({ ...formValues, status: e.target.value })
+                }
+              >
+                {statusOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </div>
+            <div>
+              <Button type="submit" variant="contained">
+                <span>{id ? 'Update' : 'Create'}</span>
+              </Button>
+            </div>
+          </Box>
+        </form>
+      </Box>
+    </Box>
   );
 };
 
