@@ -34,11 +34,14 @@ const Home = () => {
         <p>Welcome to the home page</p>
       </div>
       <h2>Users</h2>
-      <div>
-        {users.map((user: User) => (
-          <UserCard key={user.id} user={user} />
-        ))}
-      </div>
+      {users.length === 0 && <p>Loading...</p>}
+      {users.length > 0 && (
+        <div>
+          {users.map((user: User) => (
+            <UserCard key={user.id} user={user} />
+          ))}
+        </div>
+      )}
     </>
   );
 };
