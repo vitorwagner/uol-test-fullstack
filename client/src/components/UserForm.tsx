@@ -67,10 +67,7 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
 
   return (
     <>
-      <div>
-        <h1>UserForm for User {id}</h1>
-        <p>Welcome to the user form page</p>
-      </div>
+      {id !== undefined ? <h1>Update User {id}</h1> : <h1>Create User</h1>}
       <form onSubmit={onSubmit}>
         <div>
           <input
@@ -139,7 +136,7 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
           </select>
         </div>
         <div>
-          <button type="submit">Submit</button>
+          <button type="submit"><span>{id ? 'Editar' : 'Criar'}</span></button>
         </div>
       </form>
     </>

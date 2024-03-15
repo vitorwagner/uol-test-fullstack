@@ -20,7 +20,6 @@ const Home = () => {
     const response = await axios.get(API_URL);
     const data = await response.data;
     setUsers(data);
-    console.log(data);
   };
 
   useEffect(() => {
