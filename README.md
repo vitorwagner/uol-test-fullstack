@@ -1,6 +1,6 @@
 This is a fullstack application that allows for the management of a client database. It allows the user to perform such actions as create new clients, edit existing clients and visualize all current clients in the database.
 
-It was developed using the Flask framework for the backend and React for the frontend. This project was developed for the Fullstack Developer Test by UOL.
+It was developed using the Flask framework for the backend with a SQLite database and React for the frontend. This project was developed for the Fullstack Developer Test by UOL.
 
 ### How to run this project:
 
@@ -8,6 +8,19 @@ It was developed using the Flask framework for the backend and React for the fro
 docker compose up
 ```
 
+Then access the project at:
+
+```terminal
+http://localhost:3000/
+```
+
+Where you'll be able to view the user list, work with a persistent database and edit and create new users.
+
+<details>
+<summary>Testing</summary>
+You can run unit tests through: npm run test
+
+</details>
 <details>
 <summary>Original prompt</summary>
 # Teste Fullstack: Aplicativo de Gerenciamento de Clientes
