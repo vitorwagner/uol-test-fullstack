@@ -61,7 +61,8 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
 
     const { error } = schema.validate(payload);
     if (error) {
-      alert(error.message);
+      setIsError(true);
+      setMessage(error.message);
     } else {
       try {
         if (id === undefined) {
