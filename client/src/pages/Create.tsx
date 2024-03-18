@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import UserForm from '../components/UserForm';
 
 const Create = () => {
@@ -13,6 +14,8 @@ const Create = () => {
         Create user
       </Typography>
       <UserForm />
+      <br />
+      <Footer />
     </>
   );
 };

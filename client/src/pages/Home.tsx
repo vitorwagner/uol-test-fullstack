@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import axios from 'axios';
 import UserCard from '../components/UserCard';
 import { Box, Typography } from '@mui/material';
@@ -51,6 +52,7 @@ const Home = () => {
           ))}
         </Box>
       )}
+      <Footer />      
     </>
   );
 };

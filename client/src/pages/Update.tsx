@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import UserForm from '../components/UserForm';
+import Footer from '../components/Footer';
 import { Typography } from '@mui/material';
 
 const Update = () => {
@@ -16,6 +17,8 @@ const Update = () => {
         Update user
       </Typography>
       <UserForm id={Number(params.id)} />
+      <br />
+      <Footer />
     </>
   );
 };
