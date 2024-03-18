@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Joi from 'joi';
 import { CPFPatternCustom, PhonePatternCustom } from '../utils/customPatterns';
@@ -20,7 +21,7 @@ const schema = Joi.object({
     'string.email': 'Email must be a valid email',
     'any.required': 'Email is a required field',
   }),
-  phone: Joi.string().pattern(new RegExp('^([1-9]{2}) (?:[2-8]|9[0-9])[0-9]{3}-[0-9]{4}$')).required().messages({
+  phone: Joi.string().pattern(new RegExp("^\\([1-9]{2}\\) (?:[2-8]|9[0-9])[0-9]{3}\\-[0-9]{4}$")).required().messages({
     'string.empty': 'Phone cannot be empty',
     'string.pattern.base': 'Phone number is not valid',
     'any.required': 'Phone is a required field',
@@ -44,6 +45,7 @@ const statusOptions = [
 ];
 
 const UserForm: React.FC<UserFormProps> = ({ id }) => {
+  const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL as string;
 
   const [formValues, setFormValues] = useState({
@@ -74,15 +76,16 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
     const form = e.currentTarget;
     const data = new FormData(form);
     const payload = Object.fromEntries(data.entries());
+    console.log(payload);
 
     const { error } = schema.validate(payload);
     if (error) {
       alert(error.message);
     } else {
-      console.log(payload);
       if (id === undefined) {
         axios.post(`${API_URL}`, payload);
       } else axios.put(`${API_URL}/update/${id}`, payload);
+      navigate('/')
     }
   };
 
