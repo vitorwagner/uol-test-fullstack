@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 from flask_expects_json import expects_json
 from flask_cors import CORS
 
@@ -65,7 +66,19 @@ def create_user():
         status=data["status"],
     )
     db.session.add(new_user)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except IntegrityError as e:
+        db.session.rollback()
+        error_info = str(e.orig)
+        if 'email' in error_info:
+            return "Another user already exists with this email", 409
+        elif 'CPF' in error_info:
+            return "Another user already exists with this CPF", 409
+        elif 'phone' in error_info:
+            return "Another user already exists with this phone", 409
+        else:
+            return "An error occurred", 400
     return jsonify(new_user.serialize()), 201
 
 @app.route("/api/users/delete/<int:id>", methods=["DELETE"])
@@ -89,7 +102,20 @@ def update_user(id):
     user.CPF = data["CPF"]
     user.phone = data["phone"]
     user.status = data["status"]
-    db.session.commit()
+
+    try:
+        db.session.commit()
+    except IntegrityError as e:
+        db.session.rollback()
+        error_info = str(e.orig)
+        if 'email' in error_info:
+            return "Another user already exists with this email", 409
+        elif 'CPF' in error_info:
+            return "Another user already exists with this CPF", 409
+        elif 'phone' in error_info:
+            return "Another user already exists with this phone", 409
+        else:
+            return "An error occurred", 400
     return jsonify(user.serialize()), 200
 
 @app.route("/api/users/<int:id>", methods=["GET"])

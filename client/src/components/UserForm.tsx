@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Joi from 'joi';
 import { CPFPatternCustom, PhonePatternCustom } from '../utils/customPatterns';
-import { Box, TextField, Select, MenuItem, Button } from '@mui/material';
+import { Box, TextField, Select, MenuItem, Button, Typography } from '@mui/material';
 
 interface UserFormProps {
   id?: number;
@@ -48,6 +48,9 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL as string;
 
+  const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+
   const [formValues, setFormValues] = useState({
     name: '',
     email: '',
@@ -71,7 +74,7 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
     }
   }, [id, API_URL]);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
@@ -82,22 +85,31 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
     if (error) {
       alert(error.message);
     } else {
-      if (id === undefined) {
-        axios.post(`${API_URL}`, payload);
-      } else axios.put(`${API_URL}/update/${id}`, payload);
-      navigate('/')
+      try {
+
+        if (id === undefined) {
+          await axios.post(`${API_URL}`, payload);
+        } else await axios.put(`${API_URL}/update/${id}`, payload);
+        navigate('/')
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          setIsError(true);
+          setMessage(error.response?.data || 'An error occurred');
+        }
     }
+  }
   };
 
   return (
     <Box display="flex">
+      
       <Box
         margin="auto"
         display="flex"
         flexDirection="column"
         alignItems="center"
       >
-        <form onSubmit={onSubmit}>
+                <form onSubmit={onSubmit}>
           <Box
             display="flex"
             flexDirection="column"
@@ -189,6 +201,11 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
             </div>
           </Box>
         </form>
+        {message && (
+        <Typography className={isError ? "error-message" : "success-message"} margin="3rem" variant="h5" color="red">
+          {message}
+        </Typography>
+        )}
       </Box>
     </Box>
   );
