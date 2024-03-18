@@ -33,15 +33,21 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User %r>" % self.name
-    
+
 
 schema = {
     "type": "object",
     "properties": {
         "name": {"type": "string"},
         "email": {"type": "string"},
-        "CPF": {"type": "string", "pattern": "^([0-9]){3}\.([0-9]){3}\.([0-9]){3}-([0-9]){2}$"},
-        "phone": {"type": "string", "pattern": "^\([1-9]{2}\) (?:[2-8]|9[0-9])[0-9]{3}\-[0-9]{4}$"},
+        "CPF": {
+            "type": "string",
+            "pattern": "^([0-9]){3}\.([0-9]){3}\.([0-9]){3}-([0-9]){2}$",
+        },
+        "phone": {
+            "type": "string",
+            "pattern": "^\([1-9]{2}\) (?:[2-8]|9[0-9])[0-9]{3}\-[0-9]{4}$",
+        },
         "status": {"type": "string"},
     },
     "required": ["name", "email", "CPF", "phone", "status"],
@@ -71,15 +77,16 @@ def create_user():
     except IntegrityError as e:
         db.session.rollback()
         error_info = str(e.orig)
-        if 'email' in error_info:
+        if "email" in error_info:
             return "Another user already exists with this email", 409
-        elif 'CPF' in error_info:
+        elif "CPF" in error_info:
             return "Another user already exists with this CPF", 409
-        elif 'phone' in error_info:
+        elif "phone" in error_info:
             return "Another user already exists with this phone", 409
         else:
             return "An error occurred", 400
     return jsonify(new_user.serialize()), 201
+
 
 @app.route("/api/users/delete/<int:id>", methods=["DELETE"])
 def delete_user(id):
@@ -89,6 +96,7 @@ def delete_user(id):
     db.session.delete(user)
     db.session.commit()
     return jsonify(user.serialize()), 200
+
 
 @app.route("/api/users/update/<int:id>", methods=["PUT"])
 @expects_json(schema)
@@ -108,15 +116,16 @@ def update_user(id):
     except IntegrityError as e:
         db.session.rollback()
         error_info = str(e.orig)
-        if 'email' in error_info:
+        if "email" in error_info:
             return "Another user already exists with this email", 409
-        elif 'CPF' in error_info:
+        elif "CPF" in error_info:
             return "Another user already exists with this CPF", 409
-        elif 'phone' in error_info:
+        elif "phone" in error_info:
             return "Another user already exists with this phone", 409
         else:
             return "An error occurred", 400
     return jsonify(user.serialize()), 200
+
 
 @app.route("/api/users/<int:id>", methods=["GET"])
 def get_user(id):
@@ -130,4 +139,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
-    app.run(debug=True, host='0.0.0.0', port=8080)
+    app.run(debug=True, host="0.0.0.0", port=8080)

@@ -39,7 +39,11 @@ const Home = () => {
       <Typography variant="h6" component="div" align="center" margin="1rem">
         Registered users: {users.length}
       </Typography>
-      {users.length === 0 && <Typography variant="h6" component="div" align="center" margin="1rem">There are no registered users</Typography>}
+      {users.length === 0 && (
+        <Typography variant="h6" component="div" align="center" margin="1rem">
+          There are no registered users
+        </Typography>
+      )}
       {users.length > 0 && (
         <Box padding="1rem">
           {users.map((user: User) => (
@@ -47,7 +51,6 @@ const Home = () => {
           ))}
         </Box>
       )}
-      
     </>
   );
 };

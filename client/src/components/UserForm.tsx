@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Joi from 'joi';
 import { CPFPatternCustom, PhonePatternCustom } from '../utils/customPatterns';
-import { Box, TextField, Select, MenuItem, Button, Typography } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Select,
+  MenuItem,
+  Button,
+  Typography,
+} from '@mui/material';
 
 interface UserFormProps {
   id?: number;
@@ -21,11 +28,14 @@ const schema = Joi.object({
     'string.email': 'Email must be a valid email',
     'any.required': 'Email is a required field',
   }),
-  phone: Joi.string().pattern(new RegExp("^\\([1-9]{2}\\) (?:[2-8]|9[0-9])[0-9]{3}\\-[0-9]{4}$")).required().messages({
-    'string.empty': 'Phone cannot be empty',
-    'string.pattern.base': 'Phone number is not valid',
-    'any.required': 'Phone is a required field',
-  }),
+  phone: Joi.string()
+    .pattern(new RegExp('^\\([1-9]{2}\\) (?:[2-8]|9[0-9])[0-9]{3}\\-[0-9]{4}$'))
+    .required()
+    .messages({
+      'string.empty': 'Phone cannot be empty',
+      'string.pattern.base': 'Phone number is not valid',
+      'any.required': 'Phone is a required field',
+    }),
   CPF: Joi.string().length(14).required().messages({
     'string.empty': 'CPF cannot be empty',
     'string.length': 'CPF must be 14 characters long',
@@ -48,7 +58,7 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL as string;
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
 
   const [formValues, setFormValues] = useState({
@@ -79,37 +89,34 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
     const form = e.currentTarget;
     const data = new FormData(form);
     const payload = Object.fromEntries(data.entries());
-    console.log(payload);
 
     const { error } = schema.validate(payload);
     if (error) {
       alert(error.message);
     } else {
       try {
-
         if (id === undefined) {
           await axios.post(`${API_URL}`, payload);
         } else await axios.put(`${API_URL}/update/${id}`, payload);
-        navigate('/')
+        navigate('/');
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           setIsError(true);
           setMessage(error.response?.data || 'An error occurred');
         }
+      }
     }
-  }
   };
 
   return (
     <Box display="flex">
-      
       <Box
         margin="auto"
         display="flex"
         flexDirection="column"
         alignItems="center"
       >
-                <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit}>
           <Box
             display="flex"
             flexDirection="column"
@@ -202,9 +209,14 @@ const UserForm: React.FC<UserFormProps> = ({ id }) => {
           </Box>
         </form>
         {message && (
-        <Typography className={isError ? "error-message" : "success-message"} margin="3rem" variant="h5" color="red">
-          {message}
-        </Typography>
+          <Typography
+            className={isError ? 'error-message' : 'success-message'}
+            margin="3rem"
+            variant="h5"
+            color="red"
+          >
+            {message}
+          </Typography>
         )}
       </Box>
     </Box>
